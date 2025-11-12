@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register | BlueVelvet</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<h1>Register</h1>
+
+<form id="registerForm">
+    <label>Email: <input type="email" name="email" required></label><br>
+    <label>Password: <input type="password" name="password" required></label><br>
+    <label>Confirm Password: <input type="password" name="confirmPassword" required></label><br>
+    <label>Role:
+        <select name="role">
+            <option value="ADMINISTRATOR">Administrator</option>
+            <option value="EDITOR">Editor</option>
+            <option value="SALES_MANAGER">Sales Manager</option>
+            <option value="ASSISTANT"> Assistant</option>
+            <option value="SHIPPING_MANAGER"> Shipping Manager</option>
+        </select>
+    </label><br>
+    <button type="submit">Register</button>
+</form>
+
+<p id="message"></p>
+<p><a href="/login">Already have an account? Login</a></p>
+
+<script>
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const form = e.target;
+
+        const data = {
+            email: form.email.value,
+            password: form.password.value,
+            confirmPassword: form.confirmPassword.value,
+            role: form.role.value
+        };
+
+        try {
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const messageEl = document.getElementById('message');
+
+            if (response.ok) {
+                messageEl.textContent = 'Registration successful! You can now login.';
+                messageEl.style.color = 'green';
+                form.reset();
+            } else {
+                const error = await response.json();
+                messageEl.textContent = error.message || 'Registration failed';
+                messageEl.style.color = 'red';
+            }
+        } catch (err) {
+            console.error(err);
+            document.getElementById('message').textContent = 'An error occurred';
+        }
+    });
+</script>
+</body>
+</html>
