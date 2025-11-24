@@ -1,40 +1,40 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - BlueVelvet Music</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
+
 <body>
 <header>
     <div class="header-content">
-        <h1>Gerenciar Categorias <small id="userWelcome">Bem-vindo</small></h1>
+        <h1>Gerenciar Categorias
+            <small id="userWelcome">Bem-vindo</small>
+        </h1>
         <div class="header-actions">
             <span id="userInfo" class="user-info"></span>
-            <button id="logoutBtn" class="logout-btn">Logout</button>
         </div>
-    </div>
 </header>
 
 <main>
     <div class="dashboard-container">
-        <!-- Barra de ferramentas -->
         <div class="toolbar">
             <div class="search-section">
                 <input type="text" id="searchInput" placeholder="Buscar categoria por nome...">
-                <button id="searchBtn" class="search-btn">🔍</button>
+                <button id="searchBtn" class="search-btn">Buscar</button>
             </div>
 
             <div class="actions-section">
                 <button id="addCategoryBtn" class="btn-primary">Nova Categoria</button>
                 <button id="sortBtn" class="btn-secondary">Ordenar A-Z</button>
                 <button id="exportBtn" class="btn-success">Exportar CSV</button>
-                <button id="resetBtn" class="btn-danger" title="Apenas para testes">Reset Categorias</button>
+                <button id="resetBtn" class="btn-danger" title="Apenas para testes">Reset</button>
             </div>
         </div>
 
-        <!-- Filtros e informações -->
         <div class="filters-info-container">
             <div class="filters">
                 <div class="filter-group">
@@ -56,7 +56,7 @@
                 </div>
 
                 <div class="filter-group">
-                    <label for="itemsPerPage">Itens por página:</label>
+                    <label for="itemsPerPage">Por Página:</label>
                     <select id="itemsPerPage">
                         <option value="5">5</option>
                         <option value="10" selected>10</option>
@@ -68,21 +68,20 @@
 
             <div class="dashboard-info">
                 <div class="info-card">
-                    <span class="info-label">Total:</span>
+                    <span class="info-label">Total</span>
                     <span id="totalCategories" class="info-value">0</span>
                 </div>
                 <div class="info-card">
-                    <span class="info-label">Ativas:</span>
+                    <span class="info-label">Ativas</span>
                     <span id="activeCount" class="info-value">0</span>
                 </div>
                 <div class="info-card">
-                    <span class="info-label">Página:</span>
+                    <span class="info-label">Página</span>
                     <span id="currentPageInfo" class="info-value">1/1</span>
                 </div>
             </div>
         </div>
 
-        <!-- Tabela de categorias -->
         <div class="table-container">
             <table id="categoryTable">
                 <thead>
@@ -102,19 +101,16 @@
             </table>
         </div>
 
-        <!-- Paginação -->
         <div class="pagination-container">
-            <div class="pagination" id="pagination">
-                <!-- A paginação será gerada dinamicamente pelo JavaScript -->
-            </div>
+            <div class="pagination" id="pagination"></div>
             <div class="pagination-stats">
-                Mostrando <span id="showingStart">0</span>-<span id="showingEnd">0</span> de <span id="totalItems">0</span> categorias
+                Mostrando <span id="showingStart">0</span>-<span id="showingEnd">0</span> de <span
+                    id="totalItems">0</span> categorias
             </div>
         </div>
     </div>
 </main>
 
-<!-- Modal para adicionar/editar categoria -->
 <div id="modal" class="modal hidden">
     <div class="modal-content">
         <div class="modal-header">
@@ -135,7 +131,6 @@
                     <label for="parentCategory">Categoria Pai (Opcional)</label>
                     <select id="parentCategory" name="parentId">
                         <option value="">Nenhuma (Categoria Raiz)</option>
-                        <!-- Opções serão preenchidas dinamicamente -->
                     </select>
                 </div>
 
@@ -145,9 +140,9 @@
                         <label class="switch">
                             <input type="checkbox" id="categoryEnabled" name="enabled" checked>
                             <span class="slider">
-                                <span class="slider-text on">ATIVA</span>
-                                <span class="slider-text off">INATIVA</span>
-                            </span>
+                                    <span class="slider-text on">ATIVA</span>
+                                    <span class="slider-text off">INATIVA</span>
+                                </span>
                         </label>
                     </label>
                     <div class="switch-description">
@@ -164,7 +159,6 @@
     </div>
 </div>
 
-<!-- Modal de detalhes da categoria -->
 <div id="detailsModal" class="modal hidden">
     <div class="modal-content details-modal">
         <div class="modal-header">
@@ -207,26 +201,22 @@
             <div class="hierarchy-visual" id="hierarchyVisual" style="display: none;">
                 <h3>Estrutura Hierárquica</h3>
                 <div class="hierarchy-item">
-                    <span class="hierarchy-icon">📁</span>
+                    <span class="hierarchy-icon">Raiz</span>
                     <span id="hierarchyRoot" class="hierarchy-name"></span>
                     <span class="hierarchy-arrow">↓</span>
                 </div>
                 <div class="subcategories-section" id="subcategoriesSection">
                     <h4>Subcategorias</h4>
-                    <div class="subcategories-list" id="subcategoriesList">
-                        <!-- Subcategorias serão carregadas aqui -->
-                    </div>
+                    <div class="subcategories-list" id="subcategoriesList"></div>
                 </div>
             </div>
         </div>
 
         <div class="modal-footer">
-            <button type="button" id="closeDetailsBtn" class="btn-primary">Fechar</button>
         </div>
     </div>
 </div>
 
-<!-- Modal de confirmação -->
 <div id="confirmModal" class="modal hidden">
     <div class="modal-content confirm-modal">
         <div class="modal-header">
@@ -243,7 +233,6 @@
     </div>
 </div>
 
-<!-- Loading overlay -->
 <div id="loadingOverlay" class="loading-overlay hidden">
     <div class="loading-spinner"></div>
     <p>Carregando...</p>
@@ -251,4 +240,5 @@
 
 <script th:src="@{/js/dashboard.js}"></script>
 </body>
+
 </html>

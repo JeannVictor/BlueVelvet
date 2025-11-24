@@ -23,6 +23,12 @@ public class AuthController {
 
     private final AuthService authService;
 
+    @GetMapping("/")
+    public String redirectToLogin() {
+        return "redirect:/login";
+    }
+
+
     /**
      * US-1603: Register new user
      */
